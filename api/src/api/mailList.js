@@ -103,6 +103,8 @@ function validateUsername(username) {
     if (!(/^[a-zA-Z]/.test(username) || /[a-zA-Z]$/.test(username))) {
         throw new Error("Invalid email.");
     }
-
+if (recipient.toLowerCase() === "akunlama.com") {
+    return res.status(400).send({ error: "Direct use of 'akunlama.com' is not allowed" });
+}
     return username;
 }
