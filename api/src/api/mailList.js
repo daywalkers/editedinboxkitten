@@ -76,30 +76,20 @@ function validateUsername(username) {
     }
 
     // Step 4: Check for disallowed characters
-    // Allowed characters: alphanumeric, dot (.), underscore (_), hyphen (-), plus (+)
-    const disallowedChars = /[^a-zA-Z0-9._+-]/;
+    // Allowed characters: alphanumeric, dot (.), underscore (_), hyphen (-)
+    const disallowedChars = /[^a-zA-Z0-9._-]/;
     if (disallowedChars.test(username)) {
         throw new Error("Invalid email: Username contains disallowed characters.");
     }
 
-    // Step 5: Ensure that the username contains at least one alphanumeric character
-    if (!/[a-zA-Z0-9]/.test(username)) {
-        throw new Error("Invalid email: Username must contain at least one alphanumeric character.");
+    // Step 5: Reject usernames containing special characters
+    if (/[._-]/.test(username)) {
+        throw new Error("Invalid email: Username cannot contain special characters.");
     }
 
-    // Step 6: Check for consecutive dots
-    if (/\.{2,}/.test(username)) {
-        throw new Error("Invalid email: Username cannot contain consecutive dots.");
-    }
-
-    // Step 7: Ensure that the username starts and ends with an alphanumeric character
-    if (/^[._+-]/.test(username) || /[._+-]$/.test(username)) {
+    // Step 6: Ensure that the username starts and ends with an alphanumeric character
+    if (/^[._-]/.test(username) || /[._-]$/.test(username)) {
         throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
-    }
-
-    // Step 8: Prevent usernames that are substrings of other valid usernames
-    if (/[._+-]/.test(username)) {
-        throw new Error("Invalid email: Username cannot contain special characters if it's a potential substring of another valid username.");
     }
 
     return username;
