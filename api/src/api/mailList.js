@@ -97,9 +97,9 @@ function validateUsername(username) {
         throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
     }
 
-    // Step 8: Prevent pure numeric usernames
-    if (/^\d+$/.test(username)) {
-        throw new Error("Invalid email: Username cannot be purely numeric.");
+    // Step 8: Prevent usernames that are substrings of other valid usernames
+    if (/[._+-]/.test(username)) {
+        throw new Error("Invalid email: Username cannot contain special characters if it's a potential substring of another valid username.");
     }
 
     return username;
