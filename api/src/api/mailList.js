@@ -65,40 +65,42 @@ function validateUsername(username) {
     // Step 1: Trim leading and trailing whitespaces
     username = username.trim();
 
-    // Step 2: Throw error if the sanitized string is empty
+    // Step 2: Reject if the input is "akunlama.com" (case-insensitive)
+    if (username.toLowerCase() === "akunlama.com") {
+        throw new Error("Invalid email: Direct use of 'akunlama.com' is not allowed.");
+    }
+
+    // Step 3: Throw error if the sanitized string is empty
     if (username.length === 0) {
         throw new Error("Invalid email: Username cannot be empty.");
     }
 
-    // Step 3: Check for disallowed characters
+    // Step 4: Check for disallowed characters
     // Allowed characters: alphanumeric, dot (.), underscore (_), hyphen (-), plus (+)
     const disallowedChars = /[^a-zA-Z0-9._+-]/;
     if (disallowedChars.test(username)) {
         throw new Error("Invalid email: Username contains disallowed characters.");
     }
 
-    // Step 4: Ensure that the username contains at least one alphanumeric character
+    // Step 5: Ensure that the username contains at least one alphanumeric character
     if (!/[a-zA-Z0-9]/.test(username)) {
         throw new Error("Invalid email: Username must contain at least one alphanumeric character.");
     }
 
-    // Step 5: Check for consecutive dots
+    // Step 6: Check for consecutive dots
     if (/\.{2,}/.test(username)) {
         throw new Error("Invalid email: Username cannot contain consecutive dots.");
     }
 
-    // Step 6: Ensure that the username starts and ends with an alphanumeric character
+    // Step 7: Ensure that the username starts and ends with an alphanumeric character
     if (/^[._+-]/.test(username) || /[._+-]$/.test(username)) {
         throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
     }
 
-    // Step 7: Prevent pure numeric usernames and ensure it starts or ends with an alphabetical character
-    if (/^\d+$/.test(username) || !(/^[a-zA-Z]/.test(username) || /[a-zA-Z]$/.test(username))) {
-        throw new Error("Invalid email: Username must not be purely numeric and must start or end with an alphabetical character.");
+    // Step 8: Prevent pure numeric usernames
+    if (/^\d+$/.test(username)) {
+        throw new Error("Invalid email: Username cannot be purely numeric.");
     }
 
-if (recipient.toLowerCase() === "akunlama.com") {
-    return res.status(400).send({ error: "Direct use of 'akunlama.com' is not allowed" });
-}
     return username;
 }
