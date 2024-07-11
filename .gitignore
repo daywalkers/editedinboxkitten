@@ -1,0 +1,30 @@
+# Hidden files
+**/.*
+
+# lib / build folders folder
+**/node_modules
+**/bin
+**/dist
+**/gopath
+
+# UI build folder ignore
+ui/build/*
+
+# deploy build files
+deploy/firebase/functions
+deploy/firebase/public
+deploy/firebase/*.log
+
+# Remove out config files
+api/config/*.js
+ui/config/apiconfig.js
+
+# Include sample config files
+!api/config/*.sample.js
+!api/config/cacheControl.js
+
+# Whitelist anchor files & .gitignore
+!.gitignore
+!.dockerignore
+!.travis.yml
+!**/.anchor
