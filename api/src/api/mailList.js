@@ -82,30 +82,19 @@ function validateUsername(username) {
         throw new Error("Invalid email: Username contains disallowed characters.");
     }
 
-    // Step 5: Reject problematic inputs
-    if (/^[-._]+$/.test(username) || username === '-' || username === '_' || username === '.') {
-        throw new Error("Invalid email: Username cannot consist solely of special characters.");
-    }
-
-    // Step 6: Check for consecutive special characters
-    if (/[._-]{2,}/.test(username)) {
-        throw new Error("Invalid email: Username cannot contain consecutive special characters.");
-    }
-
-    // Step 7: Ensure that the username starts and ends with an alphanumeric character
-    if (/^[._-]/.test(username) || /[._-]$/.test(username)) {
-        throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
-    }
-
-    // Step 8: Prevent usernames that could be substrings of other valid usernames
+    // Step 5: Reject usernames with special characters
     if (/[._-]/.test(username)) {
-        const parts = username.split(/[._-]/);
-        for (let part of parts) {
-            if (part.length > 0 && !/^\d+$/.test(part)) {
-                return username; // Valid username with special chars and non-numeric parts
-            }
-        }
-        throw new Error("Invalid email: Username structure could lead to ambiguous matching.");
+        throw new Error("Invalid email: Username cannot contain special characters.");
+    }
+
+    // Step 6: Ensure the username is not purely numeric
+    if (/^\d+$/.test(username)) {
+        throw new Error("Invalid email: Username cannot be purely numeric.");
+    }
+
+    // Step 7: Ensure minimum length to reduce chance of conflicts
+    if (username.length < 3) {
+        throw new Error("Invalid email: Username must be at least 3 characters long.");
     }
 
     return username;
