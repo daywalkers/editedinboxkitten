@@ -97,5 +97,16 @@ function validateUsername(username) {
         throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
     }
 
+    // Step 8: Prevent usernames that could be substrings of other valid usernames
+    if (/[._-]/.test(username)) {
+        const parts = username.split(/[._-]/);
+        for (let part of parts) {
+            if (part.length > 0 && !/^\d+$/.test(part)) {
+                return username; // Valid username with special chars and non-numeric parts
+            }
+        }
+        throw new Error("Invalid email: Username structure could lead to ambiguous matching.");
+    }
+
     return username;
 }
