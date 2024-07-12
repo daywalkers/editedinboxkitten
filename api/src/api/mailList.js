@@ -70,9 +70,12 @@ function validateUsername(username) {
         throw new Error("Invalid email: Direct use of 'akunlama.com' is not allowed.");
     }
 
-    // Step 3: Throw error if the sanitized string is empty
+    // Step 3: Throw error if the sanitized string is empty or less than 3 characters
     if (username.length === 0) {
         throw new Error("Invalid email: Username cannot be empty.");
+    }
+    if (username.length < 3) {
+        throw new Error("Invalid email: Username must be at least 3 characters long.");
     }
 
     // Step 4: Check for disallowed characters
@@ -82,19 +85,19 @@ function validateUsername(username) {
         throw new Error("Invalid email: Username contains disallowed characters.");
     }
 
-    // Step 5: Reject usernames with special characters
-    if (/[._-]/.test(username)) {
-        throw new Error("Invalid email: Username cannot contain special characters.");
+    // Step 5: Reject problematic inputs
+    if (/^[-._]+$/.test(username) || username === '-' || username === '_' || username === '.') {
+        throw new Error("Invalid email: Username cannot consist solely of special characters.");
     }
 
-    // Step 6: Ensure the username is not purely numeric
-    if (/^\d+$/.test(username)) {
-        throw new Error("Invalid email: Username cannot be purely numeric.");
+    // Step 6: Check for consecutive special characters
+    if (/[._-]{2,}/.test(username)) {
+        throw new Error("Invalid email: Username cannot contain consecutive special characters.");
     }
 
-    // Step 7: Ensure minimum length to reduce chance of conflicts
-    if (username.length < 3) {
-        throw new Error("Invalid email: Username must be at least 3 characters long.");
+    // Step 7: Ensure that the username starts and ends with an alphanumeric character
+    if (/^[._-]/.test(username) || /[._-]$/.test(username)) {
+        throw new Error("Invalid email: Username must start and end with an alphanumeric character.");
     }
 
     return username;
