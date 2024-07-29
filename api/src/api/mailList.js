@@ -82,6 +82,6 @@ module.exports = (req, res) => {
             error: 'Invalid username'
         });
     }
-
+ console.log(`Calling getEvents with recipient:`, recipient);
     getEvents(username, res);
 }
