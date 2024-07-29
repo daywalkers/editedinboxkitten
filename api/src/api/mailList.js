@@ -33,7 +33,7 @@ const validateUsername = (username) => {
 }
 const getEvents = (recipient, res) => {
     mailgunClient.get('/events', {
-        recipient: `match:^${recipient}@${mailgunConfig.emailDomain}$`,
+        recipient: `${recipient}@${mailgunConfig.emailDomain}`,
         event: 'accepted'
     }, (error, body) => {
         if (error) {
@@ -42,11 +42,19 @@ const getEvents = (recipient, res) => {
                 error: 'Internal Server Error'
             });
         }
+        console.log(`Retrieved emails:`, body.items);
+        const emails = body.items.filter(email => {
+            const recipientUsername = email.recipient.split('@')[0];
+            console.log(`Filtering email:`, email);
+            console.log(`Recipient username:`, recipientUsername);
+            return recipientUsername === recipient && !email.recipient.includes('.');
+        });
+        console.log(`Filtered emails:`, emails);
         res.set('cache-control', cacheControl.dynamic);
         res.set('Content-Security-Policy', 'default-src \'self\'');
         res.set('X-Frame-Options', 'SAMEORIGIN');
         res.set('X-XSS-Protection', '1; mode=block');
-        res.status(200).send(body.items);
+        res.status(200).send(emails);
     });
 }
 module.exports = (req, res) => {
