@@ -43,12 +43,10 @@ const getEvents = (recipient, res) => {
             });
         }
         console.log(`Retrieved emails:`, body.items);
-        const emails = body.items.filter(email => {
-            const recipientUsername = email.recipient.split('@')[0];
-            console.log(`Filtering email:`, email);
-            console.log(`Recipient username:`, recipientUsername);
-            return recipientUsername === recipient && !email.recipient.includes('.');
-        });
+const emails = body.items.filter(email => {
+    const recipientUsername = email.recipient.split('@')[0].toLowerCase();
+    return recipientUsername === recipient.toLowerCase();
+});
         console.log(`Filtered emails:`, emails);
         res.set('cache-control', cacheControl.dynamic);
         res.set('Content-Security-Policy', 'default-src \'self\'');
