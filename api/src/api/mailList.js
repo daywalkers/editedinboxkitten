@@ -34,7 +34,7 @@ const validateUsername = (username) => {
 
 const getEvents = (recipient, res) => {
     mailgunClient.get('/events', {
-        recipient: `${recipient}@${mailgunConfig.emailDomain}`,
+        recipient: `contains:${recipient}@${mailgunConfig.emailDomain}`,
         event: 'accepted'
     }, (error, body) => {
         if (error) {
